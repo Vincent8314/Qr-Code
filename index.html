@@ -115,6 +115,9 @@
             display: flex;
             justify-content: center;
             margin-top: 2rem;
+            padding: 1rem; /* Ajustez ce padding si nécessaire */
+            box-sizing: border-box; /* Inclut le padding dans la taille totale */
+            max-width: 100%; /* Pour s'adapter à des écrans plus petits */
         }
         #qrcode {
             padding: 1rem;
@@ -318,6 +321,10 @@
             qrcodeContainer.innerHTML = "";
             qrTextElement.textContent = qrText;
             
+            // Ajuster la taille du conteneur en fonction du slider
+            qrcodeContainer.style.padding = size / 10 + "px";  // Ajuster le padding selon la taille
+            qrcodeContainer.style.width = size + "px";  // Ajuster la largeur selon la taille
+           
             if (text) {
                 var finalText = formatTextByCategory(text, category);
                 new QRCode(qrcodeContainer, {
@@ -360,4 +367,3 @@
         }
     </script>
 </body>
-</html>
