@@ -3,177 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de QR Code Avancé</title>
+    <title>Générateur de QR Code Gratuit</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root {
-            --primary-color: #6200ee;
-            --secondary-color: #03dac6;
-            --background-color: #f3f3f3;
-            --text-color: #333;
-            --card-background: #ffffff;
-        }
-        body {
-            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: var(--card-background);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-        .input-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--primary-color);
-        }
-        input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        .color-inputs {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-        .color-input {
-            flex: 1;
-            display: flex;
-            align-items: center;
-        }
-        .color-picker-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .color-preview {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        input[type="color"] {
-            opacity: 0;
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-        }
-        input[type="text"].color-text {
-            width: 100px;
-            padding: 0.5rem;
-        }
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s, transform 0.1s;
-            display: block;
-            margin: 1.5rem auto;
-            font-weight: 500;
-        }
-        button:hover {
-            background-color: #7c4dff;
-            transform: translateY(-2px);
-        }
-        button:active {
-            transform: translateY(0);
-        }
-        #qrcode-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            padding: 1rem; /* Ajustez ce padding si nécessaire */
-            box-sizing: border-box; /* Inclut le padding dans la taille totale */
-            max-width: 100%; /* Pour s'adapter à des écrans plus petits */
-        }
-        #qrcode {
-            padding: 1rem;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        #qr-text {
-            text-align: center;
-            margin-top: 1rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        .main-content {
-            display: flex;
-            gap: 2rem;
-        }
-        .left-column {
-            flex: 1;
-        }
-        .right-column {
-            width: 250px;
-        }
-        .size-control {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .size-slider {
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-        #size-example {
-            width: 200px;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #size-example img {
-            max-width: 100%;
-            max-height: 100%;
-            transition: all 0.3s ease;
-        }
-        #download-btn {
-            background-color: var(--secondary-color);
-            margin-top: 1rem;
-        }
-        #download-btn:hover {
-            background-color: #02b3a4;
-        }
+:root {
+    --primary-color: #2E236C; /* Bleu cobalt pour les textes et boutons */
+    --secondary-color: #7D3C98; /* Violet pour les accents secondaires */
+    --background-color: #433D8B; /* Gris clair pour l'intérieur */
+    --border-color: #433D8B; /* Noir pour le contour */
+    --text-color: var(--primary-color); /* Bleu cobalt pour le texte */
+    --card-background: #ffffff; /* Fond blanc pour les cartes */
+}
+
+body {
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    border: 8px solid var(--border-color); /* Contour noir */
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #C8ACD6;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.color-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.color-input {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.color-picker-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-preview {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+input[type="color"] {
+    opacity: 0;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+input[type="text"].color-text {
+    width: 100px;
+    padding: 0.5rem;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.1s;
+    display: block;
+    margin: 1.5rem auto;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: #423D8A; /* Légère variation de bleu au survol */
+    transform: translateY(1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+#qrcode-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+#qrcode {
+    padding: 1rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#qr-text {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.main-content {
+    display: flex;
+    gap: 2rem;
+}
+
+.left-column {
+    flex: 1;
+}
+
+.right-column {
+    width: 250px;
+}
+
+.size-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.size-slider {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#size-example {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#size-example img {
+    max-width: 100%;
+    max-height: 100%;
+    transition: all 0.3s ease;
+}
+
+#download-btn {
+    background-color: var(--secondary-color);
+    margin-top: 1rem;
+}
+
+#download-btn:hover {
+    background-color: #9F5CCF;
+}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Générateur de QR Code Avancé</h1>
+        <h1>Générateur de QR Code Gratuit</h1>
         <div class="main-content">
             <div class="left-column">
                 <div class="input-group">
@@ -196,22 +227,21 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Couleurs:</label>
                     <div class="color-inputs">
                         <div class="color-input">
                             <label for="dark-color">Couleur foncée:</label>
                             <div class="color-picker-wrapper">
-                                <div class="color-preview" id="dark-color-preview"></div>
-                                <input type="color" id="dark-color-picker" value="#000000">
-                                <input type="text" id="dark-color-text" class="color-text" value="#000000" maxlength="7">
+                                <div class="color-preview" id="dark-color-preview" style="background-color: #433D8B;"></div>
+                                <input type="color" id="dark-color-picker" value="#433D8B">
+                                <input type="text" id="dark-color-text" class="color-text" value="#433D8B" maxlength="7">
                             </div>
                         </div>
                         <div class="color-input">
                             <label for="light-color">Couleur claire:</label>
                             <div class="color-picker-wrapper">
-                                <div class="color-preview" id="light-color-preview"></div>
-                                <input type="color" id="light-color-picker" value="#ffffff">
-                                <input type="text" id="light-color-text" class="color-text" value="#ffffff" maxlength="7">
+                                <div class="color-preview" id="light-color-preview" style="background-color: #C8ACD6;"></div>
+                                <input type="color" id="light-color-picker" value="#C8ACD6">
+                                <input type="text" id="light-color-text" class="color-text" value="#C8ACD6" maxlength="7">
                             </div>
                         </div>
                     </div>
@@ -242,14 +272,21 @@
         const lightColorPicker = document.getElementById('light-color-picker');
         const darkColorText = document.getElementById('dark-color-text');
         const lightColorText = document.getElementById('light-color-text');
-        
+        const darkColorPreview = document.getElementById('dark-color-preview');
+        const lightColorPreview = document.getElementById('light-color-preview');
+
         let exampleQRCode;
 
-        function createExampleQRCode() {
+        function createExampleQRCode(size) {
+            sizeExample.innerHTML = "";
+
+            // Limite la taille du QR code entre 25% et 100% en fonction de la position du curseur
+            let scaledSize = 50 + ((size - 128) / (512 - 128)) * 150; // De 50px à 200px
+
             exampleQRCode = new QRCode(sizeExample, {
                 text: "Exemple",
-                width: 512,
-                height: 512,
+                width: Math.min(scaledSize, 200),  // Taille maximale limitée à 200px
+                height: Math.min(scaledSize, 200), // Taille maximale limitée à 200px
                 colorDark: darkColorPicker.value,
                 colorLight: lightColorPicker.value,
                 correctLevel: QRCode.CorrectLevel.H
@@ -257,56 +294,16 @@
         }
 
         function updateSizePreview() {
-            const size = sizeInput.value;
-            const maxSize = 200;
-            const scale = size / 512;
-            
-            const qrImage = sizeExample.querySelector('img');
-            if (qrImage) {
-                qrImage.style.width = `${maxSize * scale}px`;
-                qrImage.style.height = `${maxSize * scale}px`;
-            }
+            let size = parseInt(sizeInput.value);
+            createExampleQRCode(size);
         }
 
         function updateExampleColors() {
-            if (exampleQRCode) {
-                exampleQRCode._htOption.colorDark = darkColorPicker.value;
-                exampleQRCode._htOption.colorLight = lightColorPicker.value;
-                exampleQRCode.makeCode(exampleQRCode._htOption.text);
-            }
+            // Met à jour les couleurs de l'exemple QR Code en temps réel
+            darkColorPreview.style.backgroundColor = darkColorPicker.value;
+            lightColorPreview.style.backgroundColor = lightColorPicker.value;
+            createExampleQRCode(parseInt(sizeInput.value));
         }
-
-        function syncColorInputs(pickerId, textId, previewId) {
-            const picker = document.getElementById(pickerId);
-            const text = document.getElementById(textId);
-            const preview = document.getElementById(previewId);
-
-            function updateColor(color) {
-                text.value = color.toUpperCase();
-                preview.style.backgroundColor = color;
-                picker.value = color;
-                updateExampleColors();
-            }
-
-            picker.addEventListener('input', () => updateColor(picker.value));
-            text.addEventListener('input', () => {
-                if (/^#[0-9A-F]{6}$/i.test(text.value)) {
-                    updateColor(text.value);
-                }
-            });
-
-            preview.addEventListener('click', () => picker.click());
-            
-            // Initial update
-            updateColor(picker.value);
-        }
-
-        createExampleQRCode();
-        sizeInput.addEventListener('input', updateSizePreview);
-        updateSizePreview();
-
-        syncColorInputs('dark-color-picker', 'dark-color-text', 'dark-color-preview');
-        syncColorInputs('light-color-picker', 'light-color-text', 'light-color-preview');
 
         function generateQRCode() {
             var text = document.getElementById("text-input").value;
@@ -320,23 +317,35 @@
             var qrTextElement = document.getElementById("qr-text");
             qrcodeContainer.innerHTML = "";
             qrTextElement.textContent = qrText;
-            
-            // Ajuster la taille du conteneur en fonction du slider
-            qrcodeContainer.style.padding = size / 10 + "px";  // Ajuster le padding selon la taille
-            qrcodeContainer.style.width = size + "px";  // Ajuster la largeur selon la taille
-           
-            if (text) {
-                var finalText = formatTextByCategory(text, category);
-                new QRCode(qrcodeContainer, {
-                    text: finalText,
-                    width: size,
-                    height: size,
-                    colorDark: darkColor,
-                    colorLight: lightColor,
-                    correctLevel: QRCode.CorrectLevel.H
-                });
+
+            var finalText = formatTextByCategory(text, category);
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            var borderSize = 20; // Bordure plus épaisse
+
+            canvas.width = size + borderSize * 2;
+            canvas.height = size + borderSize * 2;
+
+            ctx.fillStyle = lightColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            new QRCode(qrcodeContainer, {
+                text: finalText,
+                width: size,
+                height: size,
+                colorDark: darkColor,
+                colorLight: lightColor,
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            var qrCodeImg = qrcodeContainer.querySelector("img");
+
+            qrCodeImg.onload = function () {
+                ctx.drawImage(qrCodeImg, borderSize, borderSize, size, size);
+                qrcodeContainer.innerHTML = "";
+                qrcodeContainer.appendChild(canvas);
                 document.getElementById("download-btn").style.display = "block";
-            }
+            };
         }
 
         function formatTextByCategory(text, category) {
@@ -357,13 +366,21 @@
         }
 
         function downloadQRCode() {
-            var qrCodeImg = document.querySelector("#qrcode img");
-            if (qrCodeImg) {
+            var canvas = document.querySelector("#qrcode canvas");
+            if (canvas) {
                 var link = document.createElement('a');
                 link.download = 'qrcode.png';
-                link.href = qrCodeImg.src;
+                link.href = canvas.toDataURL();
                 link.click();
             }
         }
+
+        // Événements pour changer les couleurs en temps réel
+        darkColorPicker.addEventListener('input', updateExampleColors);
+        lightColorPicker.addEventListener('input', updateExampleColors);
+
+        sizeInput.addEventListener('input', updateSizePreview);
+        createExampleQRCode(parseInt(sizeInput.value));
     </script>
 </body>
+</html>
