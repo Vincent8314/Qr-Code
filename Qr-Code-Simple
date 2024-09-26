@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de QR Code Avancé</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #6200ee;
+            --secondary-color: #03dac6;
+            --background-color: #f3f3f3;
+            --text-color: #333;
+            --card-background: #ffffff;
+        }
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .color-inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .color-input {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        input[type="color"] {
+            opacity: 0;
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        input[type="text"].color-text {
+            width: 100px;
+            padding: 0.5rem;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.1s;
+            display: block;
+            margin: 1.5rem auto;
+            font-weight: 500;
+        }
+        button:hover {
+            background-color: #7c4dff;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #qrcode-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        #qrcode {
+            padding: 1rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        #qr-text {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .main-content {
+            display: flex;
+            gap: 2rem;
+        }
+        .left-column {
+            flex: 1;
+        }
+        .right-column {
+            width: 250px;
+        }
+        .size-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .size-slider {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        #size-example {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #size-example img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: all 0.3s ease;
+        }
+        #download-btn {
+            background-color: var(--secondary-color);
+            margin-top: 1rem;
+        }
+        #download-btn:hover {
+            background-color: #02b3a4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de QR Code Avancé</h1>
+        <div class="main-content">
+            <div class="left-column">
+                <div class="input-group">
+                    <label for="text-input">Contenu du QR Code:</label>
+                    <input type="text" id="text-input" placeholder="Entrez votre texte ici">
+                </div>
+                <div class="input-group">
+                    <label for="qr-text-input">Texte sous le QR Code:</label>
+                    <input type="text" id="qr-text-input" placeholder="Texte optionnel">
+                </div>
+                <div class="input-group">
+                    <label for="category">Catégorie:</label>
+                    <select id="category">
+                        <option value="url">URL</option>
+                        <option value="text">Texte</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Numéro de téléphone</option>
+                        <option value="sms">SMS</option>
+                        <option value="wifi">Wi-Fi</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Couleurs:</label>
+                    <div class="color-inputs">
+                        <div class="color-input">
+                            <label for="dark-color">Couleur foncée:</label>
+                            <div class="color-picker-wrapper">
+                                <div class="color-preview" id="dark-color-preview"></div>
+                                <input type="color" id="dark-color-picker" value="#000000">
+                                <input type="text" id="dark-color-text" class="color-text" value="#000000" maxlength="7">
+                            </div>
+                        </div>
+                        <div class="color-input">
+                            <label for="light-color">Couleur claire:</label>
+                            <div class="color-picker-wrapper">
+                                <div class="color-preview" id="light-color-preview"></div>
+                                <input type="color" id="light-color-picker" value="#ffffff">
+                                <input type="text" id="light-color-text" class="color-text" value="#ffffff" maxlength="7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="size-control">
+                    <label for="qr-size">Taille du QR Code:</label>
+                    <input type="range" id="qr-size" min="128" max="512" value="256" step="32" class="size-slider">
+                    <div id="size-example"></div>
+                </div>
+            </div>
+        </div>
+        <button onclick="generateQRCode()">Générer QR Code</button>
+        <div id="qrcode-container">
+            <div>
+                <div id="qrcode"></div>
+                <p id="qr-text"></p>
+            </div>
+        </div>
+        <button id="download-btn" onclick="downloadQRCode()" style="display: none;">Télécharger le QR Code</button>
+    </div>
+
+    <script>
+        const sizeInput = document.getElementById('qr-size');
+        const sizeExample = document.getElementById('size-example');
+        const darkColorPicker = document.getElementById('dark-color-picker');
+        const lightColorPicker = document.getElementById('light-color-picker');
+        const darkColorText = document.getElementById('dark-color-text');
+        const lightColorText = document.getElementById('light-color-text');
+        
+        let exampleQRCode;
+
+        function createExampleQRCode() {
+            exampleQRCode = new QRCode(sizeExample, {
+                text: "Exemple",
+                width: 512,
+                height: 512,
+                colorDark: darkColorPicker.value,
+                colorLight: lightColorPicker.value,
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        function updateSizePreview() {
+            const size = sizeInput.value;
+            const maxSize = 200;
+            const scale = size / 512;
+            
+            const qrImage = sizeExample.querySelector('img');
+            if (qrImage) {
+                qrImage.style.width = `${maxSize * scale}px`;
+                qrImage.style.height = `${maxSize * scale}px`;
+            }
+        }
+
+        function updateExampleColors() {
+            if (exampleQRCode) {
+                exampleQRCode._htOption.colorDark = darkColorPicker.value;
+                exampleQRCode._htOption.colorLight = lightColorPicker.value;
+                exampleQRCode.makeCode(exampleQRCode._htOption.text);
+            }
+        }
+
+        function syncColorInputs(pickerId, textId, previewId) {
+            const picker = document.getElementById(pickerId);
+            const text = document.getElementById(textId);
+            const preview = document.getElementById(previewId);
+
+            function updateColor(color) {
+                text.value = color.toUpperCase();
+                preview.style.backgroundColor = color;
+                picker.value = color;
+                updateExampleColors();
+            }
+
+            picker.addEventListener('input', () => updateColor(picker.value));
+            text.addEventListener('input', () => {
+                if (/^#[0-9A-F]{6}$/i.test(text.value)) {
+                    updateColor(text.value);
+                }
+            });
+
+            preview.addEventListener('click', () => picker.click());
+            
+            // Initial update
+            updateColor(picker.value);
+        }
+
+        createExampleQRCode();
+        sizeInput.addEventListener('input', updateSizePreview);
+        updateSizePreview();
+
+        syncColorInputs('dark-color-picker', 'dark-color-text', 'dark-color-preview');
+        syncColorInputs('light-color-picker', 'light-color-text', 'light-color-preview');
+
+        function generateQRCode() {
+            var text = document.getElementById("text-input").value;
+            var size = parseInt(sizeInput.value);
+            var darkColor = darkColorPicker.value;
+            var lightColor = lightColorPicker.value;
+            var qrText = document.getElementById("qr-text-input").value;
+            var category = document.getElementById("category").value;
+            
+            var qrcodeContainer = document.getElementById("qrcode");
+            var qrTextElement = document.getElementById("qr-text");
+            qrcodeContainer.innerHTML = "";
+            qrTextElement.textContent = qrText;
+            
+            if (text) {
+                var finalText = formatTextByCategory(text, category);
+                new QRCode(qrcodeContainer, {
+                    text: finalText,
+                    width: size,
+                    height: size,
+                    colorDark: darkColor,
+                    colorLight: lightColor,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                document.getElementById("download-btn").style.display = "block";
+            }
+        }
+
+        function formatTextByCategory(text, category) {
+            switch(category) {
+                case "url":
+                    return text.startsWith("http") ? text : "https://" + text;
+                case "email":
+                    return "mailto:" + text;
+                case "phone":
+                    return "tel:" + text;
+                case "sms":
+                    return "sms:" + text;
+                case "wifi":
+                    return "WIFI:T:WPA;S:<SSID>;P:<PASSWORD>;;".replace("<SSID>", text.split(',')[0]).replace("<PASSWORD>", text.split(',')[1]);
+                default:
+                    return text;
+            }
+        }
+
+        function downloadQRCode() {
+            var qrCodeImg = document.querySelector("#qrcode img");
+            if (qrCodeImg) {
+                var link = document.createElement('a');
+                link.download = 'qrcode.png';
+                link.href = qrCodeImg.src;
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>
