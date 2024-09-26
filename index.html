@@ -7,12 +7,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
 :root {
-    --primary-color: #2E236C; /* Bleu cobalt pour les textes et boutons */
-    --secondary-color: #7D3C98; /* Violet pour les accents secondaires */
-    --background-color: #433D8B; /* Gris clair pour l'intérieur */
-    --border-color: #433D8B; /* Noir pour le contour */
-    --text-color: var(--primary-color); /* Bleu cobalt pour le texte */
-    --card-background: #ffffff; /* Fond blanc pour les cartes */
+    --primary-color: #2E236C;
+    --secondary-color: #7D3C98;
+    --background-color: #433D8B;
+    --border-color: #433D8B;
+    --text-color: var(--primary-color);
+    --card-background: #ffffff;
 }
 
 body {
@@ -22,14 +22,14 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 20px;
-    border: 8px solid var(--border-color); /* Contour noir */
+    border: 8px solid var(--border-color);
 }
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
     background-color: var(--card-background);
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
@@ -37,12 +37,13 @@ body {
 h1 {
     color: var(--primary-color);
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 700;
+    font-size: 1.5rem;
 }
 
 .input-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     position: relative;
 }
 
@@ -69,15 +70,15 @@ input[type="text"]:focus, input[type="number"]:focus, select:focus {
 
 .color-inputs {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 1rem;
     margin-top: 0.5rem;
 }
 
 .color-input {
-    flex: 1;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .color-picker-wrapper {
@@ -117,12 +118,14 @@ button {
     border-radius: 8px;
     transition: background-color 0.3s, transform 0.1s;
     display: block;
-    margin: 1.5rem auto;
+    margin: 1rem auto;
     font-weight: 500;
+    width: 100%;
+    max-width: 300px;
 }
 
 button:hover {
-    background-color: #423D8A; /* Légère variation de bleu au survol */
+    background-color: #423D8A;
     transform: translateY(1px);
 }
 
@@ -133,7 +136,7 @@ button:active {
 #qrcode-container {
     display: flex;
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 1rem;
     box-sizing: border-box;
     max-width: 100%;
@@ -155,15 +158,12 @@ button:active {
 
 .main-content {
     display: flex;
-    gap: 2rem;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.left-column {
-    flex: 1;
-}
-
-.right-column {
-    width: 250px;
+.left-column, .right-column {
+    width: 100%;
 }
 
 .size-control {
@@ -199,6 +199,36 @@ button:active {
 
 #download-btn:hover {
     background-color: #9F5CCF;
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .main-content {
+        flex-direction: row;
+    }
+
+    .left-column {
+        flex: 1;
+    }
+
+    .right-column {
+        width: 250px;
+    }
+
+    .color-inputs {
+        flex-direction: row;
+    }
+
+    button {
+        width: auto;
+    }
 }
     </style>
 </head>
@@ -266,6 +296,7 @@ button:active {
     </div>
 
     <script>
+        // Le script JavaScript reste inchangé
         const sizeInput = document.getElementById('qr-size');
         const sizeExample = document.getElementById('size-example');
         const darkColorPicker = document.getElementById('dark-color-picker');
@@ -280,13 +311,12 @@ button:active {
         function createExampleQRCode(size) {
             sizeExample.innerHTML = "";
 
-            // Limite la taille du QR code entre 25% et 100% en fonction de la position du curseur
-            let scaledSize = 50 + ((size - 128) / (512 - 128)) * 150; // De 50px à 200px
+            let scaledSize = 50 + ((size - 128) / (512 - 128)) * 150;
 
             exampleQRCode = new QRCode(sizeExample, {
                 text: "Exemple",
-                width: Math.min(scaledSize, 200),  // Taille maximale limitée à 200px
-                height: Math.min(scaledSize, 200), // Taille maximale limitée à 200px
+                width: Math.min(scaledSize, 200),
+                height: Math.min(scaledSize, 200),
                 colorDark: darkColorPicker.value,
                 colorLight: lightColorPicker.value,
                 correctLevel: QRCode.CorrectLevel.H
@@ -299,7 +329,6 @@ button:active {
         }
 
         function updateExampleColors() {
-            // Met à jour les couleurs de l'exemple QR Code en temps réel
             darkColorPreview.style.backgroundColor = darkColorPicker.value;
             lightColorPreview.style.backgroundColor = lightColorPicker.value;
             createExampleQRCode(parseInt(sizeInput.value));
@@ -321,7 +350,7 @@ button:active {
             var finalText = formatTextByCategory(text, category);
             var canvas = document.createElement('canvas');
             var ctx = canvas.getContext('2d');
-            var borderSize = 20; // Bordure plus épaisse
+            var borderSize = 20;
 
             canvas.width = size + borderSize * 2;
             canvas.height = size + borderSize * 2;
@@ -375,7 +404,6 @@ button:active {
             }
         }
 
-        // Événements pour changer les couleurs en temps réel
         darkColorPicker.addEventListener('input', updateExampleColors);
         lightColorPicker.addEventListener('input', updateExampleColors);
 
